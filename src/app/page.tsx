@@ -1,5 +1,5 @@
 import Image from 'next/image';
 
 export default function Home() {
-  return <main>Hello World!</main>;
+  return <h1 className="text-4xl">Home</h1>;
 }
