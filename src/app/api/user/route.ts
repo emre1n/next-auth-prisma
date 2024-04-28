@@ -1,11 +1,13 @@
-import prisma from '@/lib/prisma';
+import prisma from '@/libs/prisma';
 import { NextResponse } from 'next/server';
 import { hash } from 'bcrypt';
+import CREATE_VALIDATION_SCHEMA from '@/modules/user/lib/constants/CREATE_VALIDATION_SCHEMA';
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { email, username, password } = body;
+    const { email, username, name, password } =
+      CREATE_VALIDATION_SCHEMA.parse(body);
 
     // Check if the email is already in use
     const existingUserByEmail = await prisma.user.findUnique({
@@ -41,6 +43,7 @@ export async function POST(req: Request) {
       data: {
         email,
         username,
+        name,
         password: hashedPassword,
       },
     });
