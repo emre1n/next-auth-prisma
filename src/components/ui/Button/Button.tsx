@@ -1,7 +1,29 @@
-export default function Button() {
+'use client';
+
+interface ButtonProps {
+  onClick?: () => void;
+  children: React.ReactNode;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  pending?: boolean;
+}
+
+export default function Button({
+  onClick,
+  children,
+  type = 'button',
+  disabled = false,
+  pending = false,
+}: ButtonProps) {
   return (
-    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-      Button
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      aria-disabled={pending}
+      className="px-4 py-2 bg-zinc-800 rounded-lg text-white"
+    >
+      {pending ? <span className="loading loading-spinner"></span> : children}
     </button>
   );
 }

@@ -1,7 +1,7 @@
 import prisma from '@/libs/prisma';
 import { NextResponse } from 'next/server';
 import { hash } from 'bcrypt';
-import CREATE_VALIDATION_SCHEMA from '@/modules/user/lib/constants/CREATE_VALIDATION_SCHEMA';
+import CREATE_VALIDATION_SCHEMA from '@/libs/constants/CREATE_VALIDATION_SCHEMA';
 
 export async function POST(req: Request) {
   try {

@@ -10,12 +10,14 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "5.13.0",
     "bcrypt": "^5.1.1",
     "clsx": "^2.1.1",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.51.3",
     "tailwind-merge": "^2.3.0",
     "zod": "^3.23.4"
   },
