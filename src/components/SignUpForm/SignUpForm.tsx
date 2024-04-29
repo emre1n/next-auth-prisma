@@ -36,8 +36,8 @@ export default function SignUpForm() {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
-        <div className="flex flex-col gap-4 w-full">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+        <div className="space-y-2">
           <FormFieldTextInput
             label="Name"
             fieldName="name"
@@ -59,7 +59,7 @@ export default function SignUpForm() {
             placeholder="Enter your password"
           />
         </div>
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Sign Up</Button>
       </form>
     </FormProvider>
   );
