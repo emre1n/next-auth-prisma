@@ -8,6 +8,7 @@ import {
   USER_SIGNUP_VALIDATION_SCHEMA,
   SignUpFormValuesType,
 } from '@/libs/constants/USER_SIGNUP_VALIDATION_SCHEMA';
+import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
 
 type Inputs = SignUpFormValuesType;
 
@@ -53,7 +54,7 @@ export default function SignUpForm() {
             fieldName="email"
             placeholder="mail@example.com"
           />
-          <FormFieldTextInput
+          <FormFieldPasswordInput
             label="Password"
             fieldName="password"
             placeholder="Enter your password"
