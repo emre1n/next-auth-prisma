@@ -24,7 +24,11 @@ const defaultFormValues = {
   password: '',
 };
 
-export default function SignUpForm({ action }: { action: Function }) {
+interface SignUpFormProps {
+  createUser: Function;
+}
+
+export default function SignUpForm({ createUser }: SignUpFormProps) {
   const router = useRouter();
 
   const methods = useForm<Inputs>({
@@ -36,7 +40,7 @@ export default function SignUpForm({ action }: { action: Function }) {
 
   const onSubmit = async (data: Inputs) => {
     try {
-      const response = await action(data);
+      const response = await createUser(data);
       if (response.success) {
         router.push('/sign-in');
       } else {

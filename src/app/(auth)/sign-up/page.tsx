@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <div className="w-full flex flex-col gap-8">
       <h1 className="text-2xl">Sign up</h1>
-      <SignUpForm action={createUser} />
+      <SignUpForm createUser={createUser} />
     </div>
   );
 }
