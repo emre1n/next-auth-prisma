@@ -34,14 +34,17 @@ export default function SignUpForm({ action }: { action: Function }) {
 
   const { handleSubmit } = methods;
 
-  const onSubmit = (data: Inputs) => {
-    console.log('formData=>', data);
-
+  const onSubmit = async (data: Inputs) => {
     try {
-      action(data);
-      router.push('/sign-in');
+      const response = await action(data);
+      if (response.success) {
+        router.push('/sign-in');
+      } else {
+        throw new Error(response.message || 'Error signing up');
+      }
     } catch (error) {
-      console.error('Error signing up:', error);
+      console.error(error);
+      // TODO: Show this error message to the user
     }
   };
 

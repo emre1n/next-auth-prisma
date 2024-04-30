@@ -3,14 +3,10 @@
 import prisma from '@/libs/prisma';
 
 import { hash } from 'bcrypt';
-import {
-  SignUpFormValuesType,
-  USER_SIGNUP_VALIDATION_SCHEMA,
-} from '@/libs/constants/USER_SIGNUP_VALIDATION_SCHEMA';
+import { SignUpFormValuesType } from '@/libs/constants/USER_SIGNUP_VALIDATION_SCHEMA';
 
 export async function createUser(data: SignUpFormValuesType) {
-  const { email, username, name, password } =
-    USER_SIGNUP_VALIDATION_SCHEMA.parse(data);
+  const { email, username, name, password } = data;
 
   try {
     // Check if the email is already in use
@@ -21,7 +17,10 @@ export async function createUser(data: SignUpFormValuesType) {
     });
 
     if (existingUserByEmail) {
-      throw new Error('User with this email already exists');
+      return {
+        success: false,
+        message: 'User with this email already exists',
+      };
     }
 
     // Check if the username is already in use
@@ -32,7 +31,10 @@ export async function createUser(data: SignUpFormValuesType) {
     });
 
     if (existingUserByUsername) {
-      throw new Error('User with this username already exists');
+      return {
+        success: false,
+        message: 'User with this username already exists',
+      };
     }
 
     // Create a new user
@@ -48,8 +50,13 @@ export async function createUser(data: SignUpFormValuesType) {
 
     const { password: _, ...userWithoutPassword } = newUser;
     console.log('user created =>', userWithoutPassword);
+
+    return {
+      success: true,
+      user: userWithoutPassword,
+      message: 'User successfully created',
+    };
   } catch (error) {
     console.error('Error creating user:', error);
-    throw error; // re-throw the error to be handled by the caller
   }
 }
