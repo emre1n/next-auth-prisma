@@ -1,6 +1,40 @@
 'use client';
 
-interface ButtonProps {
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const button = cva(['font-normal', 'border', 'rounded-lg'], {
+  variants: {
+    intent: {
+      primary: [
+        'bg-zinc-800',
+        'text-zinc-100',
+        'border-transparent',
+        'hover:bg-zinc-800/90',
+      ],
+      secondary: [
+        'bg-zinc-100',
+        'text-zinc-800',
+        'border-zinc-800',
+        'hover:bg-zinc-100',
+      ],
+    },
+    size: {
+      tiny: ['text-xs', 'py-0.5', 'px-1'],
+      small: ['text-sm', 'py-1', 'px-2'],
+      normal: ['text-sm', 'py-2', 'px-4'],
+      large: ['text-lg', 'py-3', 'px-6'],
+    },
+  },
+  compoundVariants: [{ intent: 'primary', size: 'normal', className: '' }],
+  defaultVariants: {
+    intent: 'primary',
+    size: 'normal',
+  },
+});
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof button> {
   onClick?: () => void;
   children: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
@@ -8,22 +42,29 @@ interface ButtonProps {
   pending?: boolean;
 }
 
-export default function Button({
+const Button: React.FC<ButtonProps> = ({
   onClick,
   children,
   type = 'button',
   disabled = false,
   pending = false,
-}: ButtonProps) {
+  className,
+  intent,
+  size,
+  ...props
+}) => {
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
       aria-disabled={pending}
-      className="px-4 py-2 bg-zinc-800 rounded-lg text-zinc-100 text-sm hover:bg-zinc-800/90"
+      className={button({ intent, size, className })}
+      {...props}
     >
-      {pending ? <span className="loading loading-spinner"></span> : children}
+      {pending ? <span>Loading...</span> : children}
     </button>
   );
-}
+};
+
+export default Button;

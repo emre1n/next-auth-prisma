@@ -9,6 +9,8 @@ import {
   SignUpFormValuesType,
 } from '@/libs/constants/USER_SIGNUP_VALIDATION_SCHEMA';
 import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 type Inputs = SignUpFormValuesType;
 
@@ -22,23 +24,31 @@ const defaultFormValues = {
   password: '',
 };
 
-export default function SignUpForm() {
+export default function SignUpForm({ action }: { action: Function }) {
+  const router = useRouter();
+
   const methods = useForm<Inputs>({
     resolver: zodResolver(USER_SIGNUP_VALIDATION_SCHEMA),
     defaultValues: { ...defaultFormValues },
   });
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = (data: Inputs) => {
-    console.log(data);
-    reset({ ...defaultFormValues });
+    console.log('formData=>', data);
+
+    try {
+      action(data);
+      router.push('/sign-in');
+    } catch (error) {
+      console.error('Error signing up:', error);
+    }
   };
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-        <div className="space-y-2">
+        <div className="space-y-3">
           <FormFieldTextInput
             label="Name"
             fieldName="name"
@@ -60,7 +70,15 @@ export default function SignUpForm() {
             placeholder="Enter your password"
           />
         </div>
-        <Button type="submit">Sign Up</Button>
+        <Button type="submit" intent="primary">
+          Sign up
+        </Button>
+        <p className="text-center text-sm text-gray-600 mt-2">
+          If you already have an account, please&nbsp;
+          <Link className="text-blue-500 hover:underline" href="/sign-in">
+            Sign in
+          </Link>
+        </p>
       </form>
     </FormProvider>
   );
