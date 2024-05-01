@@ -2,7 +2,7 @@
 
 import { ControllerRenderProps, FieldErrors } from 'react-hook-form';
 
-import FieldWrapper from '../FieldWrapper';
+import FieldWrapper from '@/components/ui/FieldWrapper';
 
 interface TextInputProps {
   field: ControllerRenderProps;

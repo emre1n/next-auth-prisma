@@ -49,7 +49,6 @@ export async function createUser(data: SignUpFormValuesType) {
     });
 
     const { password: _, ...userWithoutPassword } = newUser;
-    console.log('user created =>', userWithoutPassword);
 
     return {
       success: true,
