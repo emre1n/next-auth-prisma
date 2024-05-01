@@ -1,16 +1,16 @@
 'use client';
 
-import { useForm, FormProvider } from 'react-hook-form';
+import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
 import FormFieldTextInput from '@/components/form-components/FormFieldTextInput';
 import Button from '@/components/ui/Button';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  USER_SIGNUP_VALIDATION_SCHEMA,
   SignUpFormValuesType,
+  USER_SIGNUP_VALIDATION_SCHEMA,
 } from '@/libs/constants/USER_SIGNUP_VALIDATION_SCHEMA';
-import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { FormProvider, useForm } from 'react-hook-form';
 
 type Inputs = SignUpFormValuesType;
 
@@ -20,7 +20,6 @@ type Inputs = SignUpFormValuesType;
 const defaultFormValues = {
   username: '',
   email: '',
-  name: '',
   password: '',
 };
 
@@ -56,11 +55,6 @@ export default function SignUpForm({ createUser }: SignUpFormProps) {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
         <div className="space-y-3">
-          <FormFieldTextInput
-            label="Name"
-            fieldName="name"
-            placeholder="Enter your name"
-          />
           <FormFieldTextInput
             label="Username"
             fieldName="username"

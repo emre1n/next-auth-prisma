@@ -6,7 +6,7 @@ import { hash } from 'bcrypt';
 import { SignUpFormValuesType } from '@/libs/constants/USER_SIGNUP_VALIDATION_SCHEMA';
 
 export async function createUser(data: SignUpFormValuesType) {
-  const { email, username, name, password } = data;
+  const { email, username, password } = data;
 
   try {
     // Check if the email is already in use
@@ -43,7 +43,6 @@ export async function createUser(data: SignUpFormValuesType) {
       data: {
         email,
         username,
-        name,
         password: hashedPassword,
       },
     });
