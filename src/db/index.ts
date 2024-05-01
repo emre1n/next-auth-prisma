@@ -1,9 +1,8 @@
 'use server';
 
-import prisma from '@/libs/prisma';
-
-import { hash } from 'bcrypt';
 import { SignUpFormValuesType } from '@/libs/constants/USER_SIGNUP_VALIDATION_SCHEMA';
+import prisma from '@/libs/prisma';
+import { hash } from 'bcrypt';
 
 export async function createUser(data: SignUpFormValuesType) {
   const { email, username, password } = data;
@@ -56,5 +55,33 @@ export async function createUser(data: SignUpFormValuesType) {
     };
   } catch (error) {
     console.error('Error creating user:', error);
+  }
+}
+
+export async function signInUser(data: { email: string; password: string }) {
+  if (data) {
+    console.log('User signed in with:', data);
+    return {
+      success: true,
+      message: 'User signed in successfully',
+    };
+  }
+}
+
+export async function getUserFromDb(email: string, pwHash: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    return null;
+  }
+
+  // Check if the password matches the hash
+  if (pwHash === user.password) {
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 }

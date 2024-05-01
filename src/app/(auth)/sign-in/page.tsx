@@ -1,15 +1,11 @@
-import Link from 'next/link';
+import SignInForm from '@/components/SignInForm';
+import { signInUser } from '@/db/';
 
 export default function Page() {
   return (
-    <div className="flex flex-col justify-center items-center gap-4">
-      <h1 className="text-4xl">Sign in</h1>
-      <Link
-        className="bg-slate-500 text-white px-4 py-2 rounded-lg"
-        href="/sign-up"
-      >
-        Sign Up
-      </Link>
+    <div className="w-full flex flex-col gap-8">
+      <h1 className="text-2xl">Sign in</h1>
+      <SignInForm signInUser={signInUser} />
     </div>
   );
 }
