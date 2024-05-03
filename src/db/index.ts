@@ -1,8 +1,8 @@
 'use server';
 
-import { SignUpFormValuesType } from '@/libs/constants/USER_SIGNUP_VALIDATION_SCHEMA';
+import { SignUpFormValuesType } from '@/libs/constants/USER_REGISTER_VALIDATION_SCHEMA';
 import prisma from '@/libs/prisma';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcryptjs';
 
 export async function createUser(data: SignUpFormValuesType) {
   const { email, username, password } = data;
@@ -58,16 +58,6 @@ export async function createUser(data: SignUpFormValuesType) {
   }
 }
 
-export async function signInUser(data: { email: string; password: string }) {
-  if (data) {
-    console.log('User signed in with:', data);
-    return {
-      success: true,
-      message: 'User signed in successfully',
-    };
-  }
-}
-
 export async function getUserFromDb(email: string, pwHash: string) {
   const user = await prisma.user.findUnique({
     where: {
@@ -84,4 +74,16 @@ export async function getUserFromDb(email: string, pwHash: string) {
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
+}
+
+export async function comparePassword(password: string, pwHash: string) {
+  return await compare(password, pwHash);
+}
+
+export async function checkUserExists(email: string) {
+  return await prisma.user.findUnique({
+    where: {
+      email: email as string,
+    },
+  });
 }

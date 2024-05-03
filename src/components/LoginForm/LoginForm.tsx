@@ -1,65 +1,61 @@
 'use client';
 
+import { signIn } from '@/auth';
 import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
 import FormFieldTextInput from '@/components/form-components/FormFieldTextInput';
 import Button from '@/components/ui/Button';
 import {
-  SignUpFormValuesType,
-  USER_SIGNUP_VALIDATION_SCHEMA,
-} from '@/libs/constants/USER_SIGNUP_VALIDATION_SCHEMA';
+  LoginFormValuesType,
+  USER_LOGIN_VALIDATION_SCHEMA,
+} from '@/libs/constants/USER_LOGIN_VALIDATION_SCHEMA';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 
-type Inputs = SignUpFormValuesType;
+type Inputs = LoginFormValuesType;
 
 /**
  * FORM INITIALIZATION
  */
 const defaultFormValues = {
-  username: '',
   email: '',
   password: '',
 };
 
-interface SignUpFormProps {
-  createUser: Function;
-}
-
-export default function SignUpForm({ createUser }: SignUpFormProps) {
+export default function LoginForm() {
   const router = useRouter();
 
   const methods = useForm<Inputs>({
-    resolver: zodResolver(USER_SIGNUP_VALIDATION_SCHEMA),
+    resolver: zodResolver(USER_LOGIN_VALIDATION_SCHEMA),
     defaultValues: { ...defaultFormValues },
   });
 
   const { handleSubmit } = methods;
 
   const onSubmit = async (data: Inputs) => {
-    try {
-      const response = await createUser(data);
-      if (response.success) {
-        router.push('/sign-in');
-      } else {
-        throw new Error(response.message || 'Error signing up');
-      }
-    } catch (error) {
-      console.error(error);
-      // TODO: Show this error message to the user
-    }
+    console.log('Form data:', data);
+
+    // const signInData = await signIn('credentials', {
+    //   email: data.email,
+    //   password: data.password,
+    // });
+
+    // console.log('Sign in data:', signInData);
+
+    // if (signInData?.error) {
+    //   console.error('Error signing in:', signInData.error);
+    //   return;
+    // } else {
+    //   console.log('Sign in successful:', signInData);
+    //   router.push('/admin');
+    // }
   };
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
         <div className="space-y-3">
-          <FormFieldTextInput
-            label="Username"
-            fieldName="username"
-            placeholder="Enter your username"
-          />
           <FormFieldTextInput
             label="Email"
             fieldName="email"
@@ -72,13 +68,14 @@ export default function SignUpForm({ createUser }: SignUpFormProps) {
           />
         </div>
         <Button type="submit" intent="primary">
-          Sign up
+          Sign in
         </Button>
         <p className="text-center text-sm text-gray-600 mt-2">
-          If you already have an account, please&nbsp;
-          <Link className="text-blue-500 hover:underline" href="/sign-in">
-            Sign in
+          If you don&apos;t have an account,&nbsp; you can&nbsp;
+          <Link className="text-blue-500 hover:underline" href="/register">
+            Register
           </Link>
+          &nbsp;here.
         </p>
       </form>
     </FormProvider>

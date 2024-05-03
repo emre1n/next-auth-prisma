@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import Button from '../ui/Button';
 import { useRouter } from 'next/navigation';
+
+import Button from '../ui/Button';
 
 const Navbar = () => {
   const router = useRouter();
@@ -20,7 +21,7 @@ const Navbar = () => {
           size="normal"
           onClick={handleSignInButtonClick}
         >
-          Sign in
+          Login
         </Button>
       </div>
     </div>

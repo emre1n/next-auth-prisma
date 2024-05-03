@@ -1,11 +1,11 @@
-import SignUpForm from '@/components/SignUpForm/';
+import RegisterForm from '@/components/RegisterForm';
 import { createUser } from '@/db/';
 
 export default function Page() {
   return (
     <div className="w-full flex flex-col gap-8">
-      <h1 className="text-2xl">Sign up</h1>
-      <SignUpForm createUser={createUser} />
+      <h1 className="text-2xl">Register</h1>
+      <RegisterForm createUser={createUser} />
     </div>
   );
 }

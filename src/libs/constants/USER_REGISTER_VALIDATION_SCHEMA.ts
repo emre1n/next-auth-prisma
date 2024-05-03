@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-export const USER_SIGNIN_VALIDATION_SCHEMA = z.object({
+export const USER_REGISTER_VALIDATION_SCHEMA = z.object({
+  username: z.string().min(1, 'Username is required').max(100),
   email: z.string().min(1, 'Email is required').email('Invalid email'),
   password: z
     .string()
@@ -8,6 +9,6 @@ export const USER_SIGNIN_VALIDATION_SCHEMA = z.object({
     .min(8, 'Password must have than 8 characters'),
 });
 
-export type SignInFormValuesType = z.infer<
-  typeof USER_SIGNIN_VALIDATION_SCHEMA
+export type RegisterFormValuesType = z.infer<
+  typeof USER_REGISTER_VALIDATION_SCHEMA
 >;
