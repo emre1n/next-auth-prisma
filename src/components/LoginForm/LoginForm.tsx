@@ -71,11 +71,10 @@ export default function LoginForm() {
           Sign in
         </Button>
         <p className="text-center text-sm text-gray-600 mt-2">
-          If you don&apos;t have an account,&nbsp; you can&nbsp;
+          If you don&apos;t have an account,&nbsp;
           <Link className="text-blue-500 hover:underline" href="/register">
             Register
           </Link>
-          &nbsp;here.
         </p>
       </form>
     </FormProvider>

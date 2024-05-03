@@ -1,10 +1,10 @@
 'use server';
 
-import { SignUpFormValuesType } from '@/libs/constants/USER_REGISTER_VALIDATION_SCHEMA';
+import { RegisterFormValuesType } from '@/libs/constants/USER_REGISTER_VALIDATION_SCHEMA';
 import prisma from '@/libs/prisma';
 import { compare, hash } from 'bcryptjs';
 
-export async function createUser(data: SignUpFormValuesType) {
+export async function createUser(data: RegisterFormValuesType) {
   const { email, username, password } = data;
 
   try {
