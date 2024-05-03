@@ -1,5 +1,6 @@
 'use client';
 
+import FormToaster from '@/components/FormToaster/FormToaster';
 import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
 import FormFieldTextInput from '@/components/form-components/FormFieldTextInput';
 import Button from '@/components/ui/Button';
@@ -71,6 +72,7 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
             placeholder="Enter your password"
           />
         </div>
+        <FormToaster state="" message="" />
         <Button type="submit" intent="primary">
           Sign up
         </Button>

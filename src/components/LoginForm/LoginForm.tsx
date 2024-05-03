@@ -68,7 +68,7 @@ export default function LoginForm() {
           />
         </div>
         <Button type="submit" intent="primary">
-          Sign in
+          Login
         </Button>
         <p className="text-center text-sm text-gray-600 mt-2">
           If you don&apos;t have an account,&nbsp;
