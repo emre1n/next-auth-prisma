@@ -9,7 +9,7 @@ const Navbar = () => {
   const router = useRouter();
 
   function handleSignInButtonClick() {
-    router.push('/sign-in');
+    router.push('/login');
   }
 
   return (
