@@ -7,12 +7,14 @@ interface FormFieldPasswordInputProps {
   label: string;
   fieldName: string;
   type?: string;
+  disabled?: boolean;
   placeholder?: string;
 }
 
 export default function FormFieldPasswordInput({
   label,
   fieldName,
+  disabled,
   placeholder,
 }: FormFieldPasswordInputProps) {
   const {
@@ -30,6 +32,7 @@ export default function FormFieldPasswordInput({
           field={field}
           label={label}
           errors={errors}
+          disabled={disabled}
           placeholder={placeholder}
         />
       )}

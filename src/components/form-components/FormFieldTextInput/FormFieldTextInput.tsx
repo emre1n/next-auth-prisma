@@ -7,12 +7,14 @@ interface FormFieldTextInputProps {
   label: string;
   fieldName: string;
   type?: string;
+  disabled?: boolean;
   placeholder?: string;
 }
 
 export default function FormFieldTextInput({
   label,
   fieldName,
+  disabled,
   placeholder,
 }: FormFieldTextInputProps) {
   const {
@@ -30,6 +32,7 @@ export default function FormFieldTextInput({
           field={field}
           label={label}
           errors={errors}
+          disabled={disabled}
           placeholder={placeholder}
         />
       )}

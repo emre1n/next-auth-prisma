@@ -77,7 +77,7 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
           Sign up
         </Button>
         <p className="text-center text-sm text-gray-600 mt-2">
-          If you already have an account, please&nbsp;
+          Already have an account? please&nbsp;
           <Link className="text-blue-500 hover:underline" href="/login">
             Login
           </Link>

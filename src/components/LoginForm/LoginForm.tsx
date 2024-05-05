@@ -1,5 +1,6 @@
 'use client';
 
+import { login } from '@/actions/db/login';
 import { signIn } from '@/auth';
 import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
 import FormFieldTextInput from '@/components/form-components/FormFieldTextInput';
@@ -11,6 +12,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 type Inputs = LoginFormValuesType;
@@ -24,6 +26,7 @@ const defaultFormValues = {
 };
 
 export default function LoginForm() {
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const methods = useForm<Inputs>({
@@ -34,22 +37,9 @@ export default function LoginForm() {
   const { handleSubmit } = methods;
 
   const onSubmit = async (data: Inputs) => {
-    console.log('Form data:', data);
-
-    // const signInData = await signIn('credentials', {
-    //   email: data.email,
-    //   password: data.password,
-    // });
-
-    // console.log('Sign in data:', signInData);
-
-    // if (signInData?.error) {
-    //   console.error('Error signing in:', signInData.error);
-    //   return;
-    // } else {
-    //   console.log('Sign in successful:', signInData);
-    //   router.push('/admin');
-    // }
+    startTransition(() => {
+      login(data);
+    });
   };
 
   return (
@@ -59,15 +49,17 @@ export default function LoginForm() {
           <FormFieldTextInput
             label="Email"
             fieldName="email"
+            disabled={isPending}
             placeholder="mail@example.com"
           />
           <FormFieldPasswordInput
             label="Password"
             fieldName="password"
+            disabled={isPending}
             placeholder="Enter your password"
           />
         </div>
-        <Button type="submit" intent="primary">
+        <Button type="submit" intent="primary" disabled={isPending}>
           Login
         </Button>
         <p className="text-center text-sm text-gray-600 mt-2">

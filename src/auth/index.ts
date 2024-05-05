@@ -1,4 +1,4 @@
-import { checkUserExists } from '@/db';
+import { checkUserExists } from '@/actions/db/register';
 import prisma from '@/libs/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { compare } from 'bcryptjs';
