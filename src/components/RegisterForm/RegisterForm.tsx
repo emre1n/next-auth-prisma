@@ -11,6 +11,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { startTransition, useState, useTransition } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 type Inputs = RegisterFormValuesType;
@@ -28,7 +29,19 @@ interface RegisterFormProps {
   createUser: Function;
 }
 
+interface ResponseType {
+  success: boolean;
+  message: string;
+}
+
 export default function RegisterForm({ createUser }: RegisterFormProps) {
+  const [formStatus, setFormStatus] = useState<'success' | 'error' | undefined>(
+    undefined,
+  );
+  const [message, setMessage] = useState<string | undefined>('');
+
+  const [isPending, startTransition] = useTransition();
+
   const router = useRouter();
 
   const methods = useForm<Inputs>({
@@ -39,17 +52,17 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
   const { handleSubmit } = methods;
 
   const onSubmit = async (data: Inputs) => {
-    try {
-      const response = await createUser(data);
-      if (response.success) {
-        router.push('/login');
-      } else {
-        throw new Error(response.message || 'Error signing up');
-      }
-    } catch (error) {
-      console.error(error);
-      // TODO: Show this error message to the user
-    }
+    startTransition(() => {
+      createUser(data).then((response: ResponseType) => {
+        if (!response.success) {
+          setMessage(response.message);
+          setFormStatus('error');
+        } else {
+          setMessage(response.message);
+          setFormStatus('success');
+        }
+      });
+    });
   };
 
   return (
@@ -59,21 +72,24 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
           <FormFieldTextInput
             label="Username"
             fieldName="username"
+            disabled={isPending}
             placeholder="username123"
           />
           <FormFieldTextInput
             label="Email"
             fieldName="email"
+            disabled={isPending}
             placeholder="mail@example.com"
           />
           <FormFieldPasswordInput
             label="Password"
             fieldName="password"
+            disabled={isPending}
             placeholder="********"
           />
         </div>
-        <FormToaster state="" message="" />
-        <Button type="submit" intent="primary">
+        <FormToaster state={formStatus} message={message} />
+        <Button type="submit" intent="primary" disabled={isPending}>
           Sign up
         </Button>
         <p className="text-center text-sm text-gray-600 mt-2">

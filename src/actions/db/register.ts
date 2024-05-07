@@ -1,11 +1,23 @@
 'use server';
 
-import { RegisterFormValuesType } from '@/libs/constants/USER_REGISTER_VALIDATION_SCHEMA';
+import {
+  RegisterFormValuesType,
+  USER_REGISTER_VALIDATION_SCHEMA,
+} from '@/libs/constants/USER_REGISTER_VALIDATION_SCHEMA';
 import prisma from '@/libs/prisma';
 import { compare, hash } from 'bcryptjs';
 
 export async function createUser(data: RegisterFormValuesType) {
-  const { email, username, password } = data;
+  const validatedFields = USER_REGISTER_VALIDATION_SCHEMA.safeParse(data);
+
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      message: 'Validation failed',
+    };
+  }
+
+  const { email, username, password } = validatedFields.data;
 
   try {
     // Check if the email is already in use
