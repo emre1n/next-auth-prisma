@@ -59,7 +59,7 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
           <FormFieldTextInput
             label="Username"
             fieldName="username"
-            placeholder="Enter your username"
+            placeholder="username123"
           />
           <FormFieldTextInput
             label="Email"
@@ -69,7 +69,7 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
           <FormFieldPasswordInput
             label="Password"
             fieldName="password"
-            placeholder="Enter your password"
+            placeholder="********"
           />
         </div>
         <FormToaster state="" message="" />
@@ -77,7 +77,7 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
           Sign up
         </Button>
         <p className="text-center text-sm text-gray-600 mt-2">
-          Already have an account? please&nbsp;
+          Already have an account?&nbsp;
           <Link className="text-blue-500 hover:underline" href="/login">
             Login
           </Link>

@@ -1,7 +1,7 @@
 'use client';
 
 import { login } from '@/actions/db/login';
-import { signIn } from '@/auth';
+import FormToaster from '@/components/FormToaster';
 import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
 import FormFieldTextInput from '@/components/form-components/FormFieldTextInput';
 import Button from '@/components/ui/Button';
@@ -11,8 +11,7 @@ import {
 } from '@/libs/constants/USER_LOGIN_VALIDATION_SCHEMA';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 type Inputs = LoginFormValuesType;
@@ -26,8 +25,12 @@ const defaultFormValues = {
 };
 
 export default function LoginForm() {
+  const [formStatus, setFormStatus] = useState<'success' | 'error' | undefined>(
+    undefined,
+  );
+  const [message, setMessage] = useState<string | undefined>('');
+
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   const methods = useForm<Inputs>({
     resolver: zodResolver(USER_LOGIN_VALIDATION_SCHEMA),
@@ -38,7 +41,15 @@ export default function LoginForm() {
 
   const onSubmit = async (data: Inputs) => {
     startTransition(() => {
-      login(data);
+      login(data).then(response => {
+        if (response.error) {
+          setMessage(response.error);
+          setFormStatus('error');
+        } else {
+          setMessage(response.success);
+          setFormStatus('success');
+        }
+      });
     });
   };
 
@@ -59,11 +70,12 @@ export default function LoginForm() {
             placeholder="Enter your password"
           />
         </div>
+        <FormToaster state={formStatus} message={message} />
         <Button type="submit" intent="primary" disabled={isPending}>
           Login
         </Button>
         <p className="text-center text-sm text-gray-600 mt-2">
-          If you don&apos;t have an account,&nbsp;
+          Don&apos;t have an account,&nbsp;
           <Link className="text-blue-500 hover:underline" href="/register">
             Register
           </Link>

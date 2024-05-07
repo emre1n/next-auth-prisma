@@ -67,7 +67,7 @@ export default function FormToaster({ message, state }: FormToasterProps) {
   return (
     <div
       className={clsxWithMerge(
-        'flex items-center gap-x-2 p-3 text-sm rounded-md',
+        'flex items-center gap-x-2 p-2 text-xs rounded-md',
         textColor,
         bgColor,
       )}
