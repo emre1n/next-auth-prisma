@@ -60,6 +60,9 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
         } else {
           setMessage(response.message);
           setFormStatus('success');
+          setTimeout(() => {
+            router.push('/login');
+          }, 2000);
         }
       });
     });

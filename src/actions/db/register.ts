@@ -1,5 +1,6 @@
 'use server';
 
+import { getUserByEmail, getUserByUsername } from '@/data/user';
 import {
   RegisterFormValuesType,
   USER_REGISTER_VALIDATION_SCHEMA,
@@ -21,11 +22,7 @@ export async function createUser(data: RegisterFormValuesType) {
 
   try {
     // Check if the email is already in use
-    const existingUserByEmail = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
+    const existingUserByEmail = await getUserByEmail(email);
 
     if (existingUserByEmail) {
       return {
@@ -35,11 +32,7 @@ export async function createUser(data: RegisterFormValuesType) {
     }
 
     // Check if the username is already in use
-    const existingUserByUsername = await prisma.user.findUnique({
-      where: {
-        username,
-      },
-    });
+    const existingUserByUsername = await getUserByUsername(username);
 
     if (existingUserByUsername) {
       return {
@@ -50,6 +43,7 @@ export async function createUser(data: RegisterFormValuesType) {
 
     // Create a new user
     const hashedPassword = await hash(password, 10);
+
     const newUser = await prisma.user.create({
       data: {
         email,
