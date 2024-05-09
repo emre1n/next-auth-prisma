@@ -7,6 +7,11 @@ import Credentials from 'next-auth/providers/credentials';
 export default {
   providers: [
     Credentials({
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
       async authorize(credentials) {
         const validatedFields =
           USER_LOGIN_VALIDATION_SCHEMA.safeParse(credentials);
