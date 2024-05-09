@@ -6,7 +6,7 @@ import {
   USER_REGISTER_VALIDATION_SCHEMA,
 } from '@/libs/constants/USER_REGISTER_VALIDATION_SCHEMA';
 import prisma from '@/libs/prisma';
-import { compare, hash } from 'bcryptjs';
+import { hash } from 'bcryptjs';
 
 export async function createUser(data: RegisterFormValuesType) {
   const validatedFields = USER_REGISTER_VALIDATION_SCHEMA.safeParse(data);
@@ -80,16 +80,4 @@ export async function getUserFromDb(email: string, pwHash: string) {
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
-}
-
-export async function comparePassword(password: string, pwHash: string) {
-  return await compare(password, pwHash);
-}
-
-export async function checkUserExists(email: string) {
-  return await prisma.user.findUnique({
-    where: {
-      email: email as string,
-    },
-  });
 }

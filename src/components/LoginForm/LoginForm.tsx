@@ -42,11 +42,11 @@ export default function LoginForm() {
   const onSubmit = async (data: Inputs) => {
     startTransition(() => {
       login(data).then(response => {
-        if (!response.success) {
-          setMessage(response.message);
+        if (response && !response.success) {
+          setMessage(response?.message);
           setFormStatus('error');
         } else {
-          setMessage(response.message);
+          setMessage(response?.message);
           setFormStatus('success');
         }
       });

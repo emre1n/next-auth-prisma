@@ -13,3 +13,7 @@ body,
   padding: 0;
   margin: 0;
 }
+
+.main-height {
+  min-height: calc(100vh - 55px);
+}
