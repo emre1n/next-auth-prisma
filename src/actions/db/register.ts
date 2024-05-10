@@ -1,6 +1,6 @@
 'use server';
 
-import { getUserByEmail, getUserByUsername } from '@/data/user';
+import { getUserByEmail, getUserByName } from '@/data/user';
 import {
   RegisterFormValuesType,
   USER_REGISTER_VALIDATION_SCHEMA,
@@ -32,12 +32,12 @@ export async function createUser(data: RegisterFormValuesType) {
     }
 
     // Check if the username is already in use
-    const existingUserByUsername = await getUserByUsername(name);
+    const existingUserByName = await getUserByName(name);
 
-    if (existingUserByUsername) {
+    if (existingUserByName) {
       return {
         success: false,
-        message: 'User with this username already exists',
+        message: 'User with this name already exists',
       };
     }
 
