@@ -67,7 +67,7 @@ export default function LoginForm() {
             label="Password"
             fieldName="password"
             disabled={isPending}
-            placeholder="Enter your password"
+            placeholder="********"
           />
         </div>
         <FormToaster state={formStatus} message={message} />

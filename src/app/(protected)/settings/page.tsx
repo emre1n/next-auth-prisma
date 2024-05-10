@@ -7,7 +7,7 @@ export default async function Page() {
   return (
     <div className="flex flex-col gap-4 p-4">
       <h2 className="text-2xl">You are in!</h2>
-      <p>{JSON.stringify(session?.user?.email)}</p>
+      <div>{JSON.stringify(session)}</div>
       <form
         action={async () => {
           'use server';

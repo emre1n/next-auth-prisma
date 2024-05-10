@@ -11,7 +11,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { startTransition, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 type Inputs = RegisterFormValuesType;
@@ -20,7 +20,7 @@ type Inputs = RegisterFormValuesType;
  * FORM INITIALIZATION
  */
 const defaultFormValues = {
-  username: '',
+  name: '',
   email: '',
   password: '',
 };
@@ -73,8 +73,8 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
         <div className="space-y-3">
           <FormFieldTextInput
-            label="Username"
-            fieldName="username"
+            label="Name"
+            fieldName="name"
             disabled={isPending}
             placeholder="username123"
           />

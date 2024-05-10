@@ -32,14 +32,20 @@ model Profile {
   userId String     @unique
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
 model User {
   id      String      @id @default(cuid())
   email   String   @unique
-  username String   @unique
+  name String   @unique
   password String?
 
   emailVerified DateTime?
   image         String?
+  role         UserRole @default(USER)
   accounts      Account[]
 
   createdAt DateTime @default(now())

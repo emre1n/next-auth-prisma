@@ -18,7 +18,7 @@ export async function createUser(data: RegisterFormValuesType) {
     };
   }
 
-  const { email, username, password } = validatedFields.data;
+  const { email, name, password } = validatedFields.data;
 
   try {
     // Check if the email is already in use
@@ -32,7 +32,7 @@ export async function createUser(data: RegisterFormValuesType) {
     }
 
     // Check if the username is already in use
-    const existingUserByUsername = await getUserByUsername(username);
+    const existingUserByUsername = await getUserByUsername(name);
 
     if (existingUserByUsername) {
       return {
@@ -47,7 +47,7 @@ export async function createUser(data: RegisterFormValuesType) {
     const newUser = await prisma.user.create({
       data: {
         email,
-        username,
+        name,
         password: hashedPassword,
       },
     });
@@ -61,23 +61,5 @@ export async function createUser(data: RegisterFormValuesType) {
     };
   } catch (error) {
     console.error('Error creating user:', error);
-  }
-}
-
-export async function getUserFromDb(email: string, pwHash: string) {
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-
-  if (!user) {
-    return null;
-  }
-
-  // Check if the password matches the hash
-  if (pwHash === user.password) {
-    const { password: _, ...userWithoutPassword } = user;
-    return userWithoutPassword;
   }
 }
