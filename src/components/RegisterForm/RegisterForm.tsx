@@ -3,7 +3,9 @@
 import FormToaster from '@/components/FormToaster/FormToaster';
 import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
 import FormFieldTextInput from '@/components/form-components/FormFieldTextInput';
+import GoogleOAuthIcon from '@/components/icons/GoogleOAuthIcon';
 import Button from '@/components/ui/Button';
+import Separator from '@/components/ui/Separator';
 import {
   RegisterFormValuesType,
   USER_REGISTER_VALIDATION_SCHEMA,
@@ -68,9 +70,13 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
     });
   };
 
+  const handleGoogleOAuth = () => {
+    // Handle Google OAuth
+  };
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div className="space-y-3">
           <FormFieldTextInput
             label="Name"
@@ -92,9 +98,19 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
           />
         </div>
         <FormToaster state={formStatus} message={message} />
-        <Button type="submit" intent="primary" disabled={isPending}>
-          Sign up
-        </Button>
+        <div className="flex flex-col gap-6">
+          <Button type="submit" intent="primary" disabled={isPending}>
+            Sign up
+          </Button>
+
+          <Separator>OR CONTINUE WITH</Separator>
+
+          <Button
+            intent="secondary"
+            onClick={handleGoogleOAuth}
+            icon={<GoogleOAuthIcon />}
+          ></Button>
+        </div>
         <p className="text-center text-sm text-gray-600 mt-2">
           Already have an account?&nbsp;
           <Link className="text-blue-500 hover:underline" href="/login">

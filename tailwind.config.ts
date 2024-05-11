@@ -10,13 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: colors.zinc[800],
-        secondary: colors.zinc[100],
+        primary: colors.slate[800],
+        secondary: colors.slate[100],
         error: colors.red[500],
         warning: colors.yellow[500],
         success: colors.green[500],
         info: colors.blue[500],
-        accent: colors.blue[500],
+        accent: colors.slate[200],
         neutral: colors.gray[500],
         'base-100': colors.white,
       },

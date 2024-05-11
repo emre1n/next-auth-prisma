@@ -35,7 +35,7 @@ export async function login(data: LoginFormValuesType) {
         default:
           return {
             success: false,
-            message: 'An error occurred!',
+            message: 'Something went wrong!',
           };
       }
     }

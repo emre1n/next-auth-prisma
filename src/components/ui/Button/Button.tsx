@@ -1,10 +1,14 @@
 'use client';
 
 import clsxWithMerge from '@/helpers/clsx-with-merge';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { type VariantProps, cva } from 'class-variance-authority';
 
 const button = cva(
   [
+    'flex',
+    'items-center',
+    'justify-center',
+    'gap-2',
     'font-normal',
     'border',
     'rounded-lg',
@@ -15,16 +19,16 @@ const button = cva(
     variants: {
       intent: {
         primary: [
-          'bg-zinc-800',
-          'text-zinc-100',
+          'bg-primary',
+          'text-secondary',
           'border-transparent',
-          'hover:bg-zinc-800/90',
+          'hover:bg-primary/90',
         ],
         secondary: [
-          'bg-zinc-100',
-          'text-zinc-800',
-          'border-zinc-800',
-          'hover:bg-zinc-100',
+          'bg-secondary',
+          'text-primary',
+          'border-primary',
+          'hover:bg-secondary/90',
         ],
       },
       size: {
@@ -39,13 +43,14 @@ const button = cva(
       intent: 'primary',
       size: 'normal',
     },
-  }
+  },
 );
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof button> {
   pending?: boolean;
+  icon?: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -57,6 +62,7 @@ const Button: React.FC<ButtonProps> = ({
   className,
   intent,
   size,
+  icon,
   ...props
 }) => {
   return (
@@ -68,6 +74,7 @@ const Button: React.FC<ButtonProps> = ({
       className={button({ intent, size, className: clsxWithMerge(className) })}
       {...props}
     >
+      {icon}
       {pending ? <span>Loading...</span> : children}
     </button>
   );
