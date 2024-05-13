@@ -1,12 +1,10 @@
 'use client';
 
 import { login } from '@/actions/db/login';
-import FormToaster from '@/components/FormToaster';
+import FormToaster from '@/components/auth/FormToaster';
 import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
 import FormFieldTextInput from '@/components/form-components/FormFieldTextInput';
-import GoogleOAuthIcon from '@/components/icons/GoogleOAuthIcon';
 import Button from '@/components/ui/Button';
-import Separator from '@/components/ui/Separator';
 import {
   LoginFormValuesType,
   USER_LOGIN_VALIDATION_SCHEMA,
@@ -15,6 +13,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useState, useTransition } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import SocialLogin from '../SocialLogin';
 
 type Inputs = LoginFormValuesType;
 
@@ -55,10 +55,6 @@ export default function LoginForm() {
     });
   };
 
-  const handleGoogleOAuth = () => {
-    // Handle Google OAuth
-  };
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -82,13 +78,7 @@ export default function LoginForm() {
             Login with Email
           </Button>
 
-          <Separator>OR CONTINUE WITH</Separator>
-
-          <Button
-            intent="secondary"
-            onClick={handleGoogleOAuth}
-            icon={<GoogleOAuthIcon />}
-          ></Button>
+          <SocialLogin />
         </div>
         <p className="text-center text-sm text-gray-600 mt-2">
           Don&apos;t have an account,&nbsp;

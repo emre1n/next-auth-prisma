@@ -1,5 +1,5 @@
 import { createUser } from '@/actions/db/register';
-import RegisterForm from '@/components/RegisterForm';
+import RegisterForm from '@/components/auth/RegisterForm';
 
 export default function Page() {
   return (

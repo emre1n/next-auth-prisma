@@ -1,11 +1,10 @@
 'use client';
 
-import FormToaster from '@/components/FormToaster/FormToaster';
+import FormToaster from '@/components/auth/FormToaster/FormToaster';
+import SocialLogin from '@/components/auth/SocialLogin';
 import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
 import FormFieldTextInput from '@/components/form-components/FormFieldTextInput';
-import GoogleOAuthIcon from '@/components/icons/GoogleOAuthIcon';
 import Button from '@/components/ui/Button';
-import Separator from '@/components/ui/Separator';
 import {
   RegisterFormValuesType,
   USER_REGISTER_VALIDATION_SCHEMA,
@@ -103,13 +102,7 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
             Sign up
           </Button>
 
-          <Separator>OR CONTINUE WITH</Separator>
-
-          <Button
-            intent="secondary"
-            onClick={handleGoogleOAuth}
-            icon={<GoogleOAuthIcon />}
-          ></Button>
+          <SocialLogin />
         </div>
         <p className="text-center text-sm text-gray-600 mt-2">
           Already have an account?&nbsp;

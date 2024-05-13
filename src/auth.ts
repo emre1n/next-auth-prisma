@@ -6,6 +6,20 @@ import { UserRole } from '@prisma/client';
 import NextAuth from 'next-auth';
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
+  pages: {
+    signIn: '/auth/login',
+    error: '/auth/error',
+  },
+  events: {
+    linkAccount: async linkAccountParams => {
+      await prisma.user.update({
+        where: { id: linkAccountParams.user.id },
+        data: {
+          emailVerified: new Date(),
+        },
+      });
+    },
+  },
   callbacks: {
     jwt: async jwtParams => {
       if (!jwtParams.token.sub) return jwtParams.token;
