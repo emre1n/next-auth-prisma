@@ -1,6 +1,8 @@
 'use server';
 
 import { signIn } from '@/auth';
+import { generateVerificationToken } from '@/data/tokens';
+import { getUserByEmail } from '@/data/user';
 import type { LoginFormValuesType } from '@/libs/constants/USER_LOGIN_VALIDATION_SCHEMA';
 import { USER_LOGIN_VALIDATION_SCHEMA } from '@/libs/constants/USER_LOGIN_VALIDATION_SCHEMA';
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
@@ -17,6 +19,23 @@ export async function login(data: LoginFormValuesType) {
   }
 
   const { email, password } = validatedFields.data;
+
+  const existingUser = await getUserByEmail(email);
+
+  if (!existingUser || !existingUser.email || !existingUser.password) {
+    return {
+      success: false,
+      message: 'Email does not exist!',
+    };
+  }
+
+  if (!existingUser.emailVerified) {
+    await generateVerificationToken(existingUser.email);
+    return {
+      success: true,
+      message: 'Confirmation email sent!',
+    };
+  }
 
   try {
     await signIn('credentials', {

@@ -1,10 +1,12 @@
 'use server';
 
+import { generateVerificationToken } from '@/data/tokens';
 import { getUserByEmail, getUserByName } from '@/data/user';
 import {
   RegisterFormValuesType,
   USER_REGISTER_VALIDATION_SCHEMA,
 } from '@/libs/constants/USER_REGISTER_VALIDATION_SCHEMA';
+import { sendVerificationEmail } from '@/libs/mail';
 import prisma from '@/libs/prisma';
 import { hash } from 'bcryptjs';
 
@@ -54,10 +56,16 @@ export async function createUser(data: RegisterFormValuesType) {
 
     const { password: _, ...userWithoutPassword } = newUser;
 
+    const verificationToken = await generateVerificationToken(email);
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token,
+    );
+
     return {
       success: true,
       user: userWithoutPassword,
-      message: 'User successfully created',
+      message: 'Confirmation email sent!',
     };
   } catch (error) {
     console.error('Error creating user:', error);

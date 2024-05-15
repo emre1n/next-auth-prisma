@@ -25,7 +25,7 @@ export default function SocialLogin() {
 
   return (
     <>
-      <Separator>OR CONTINUE WITH</Separator>
+      <Separator>OR</Separator>
 
       <div className="flex flex-col gap-2">
         {providers.map(
@@ -36,7 +36,10 @@ export default function SocialLogin() {
                 intent="secondary"
                 onClick={() => handleOnClick(provider.name)}
                 icon={provider.icon}
-              ></Button>
+              >
+                Continue with{' '}
+                {provider.name.charAt(0).toUpperCase() + provider.name.slice(1)}
+              </Button>
             ),
         )}
       </div>

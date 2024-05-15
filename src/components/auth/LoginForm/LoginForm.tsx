@@ -27,10 +27,10 @@ const defaultFormValues = {
 };
 
 export default function LoginForm() {
-  const [formStatus, setFormStatus] = useState<'success' | 'error' | undefined>(
-    undefined,
-  );
-  const [message, setMessage] = useState<string | undefined>('');
+  const [formState, setFormState] = useState<{
+    status: 'success' | 'error' | undefined;
+    message: string | undefined;
+  }>({ status: undefined, message: '' });
 
   const [isPending, startTransition] = useTransition();
 
@@ -45,11 +45,9 @@ export default function LoginForm() {
     startTransition(() => {
       login(data).then(response => {
         if (response && !response.success) {
-          setMessage(response?.message);
-          setFormStatus('error');
+          setFormState({ status: 'error', message: response?.message });
         } else {
-          setMessage(response?.message);
-          setFormStatus('success');
+          setFormState({ status: 'success', message: response?.message });
         }
       });
     });
@@ -72,10 +70,10 @@ export default function LoginForm() {
             placeholder="********"
           />
         </div>
-        <FormToaster state={formStatus} message={message} />
+        <FormToaster state={formState.status} message={formState.message} />
         <div className="flex flex-col gap-6">
           <Button type="submit" intent="primary" disabled={isPending}>
-            Login with Email
+            Login
           </Button>
 
           <SocialLogin />

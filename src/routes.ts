@@ -3,7 +3,7 @@
  * These routes will not redirect logged in users to '/settings'.
  * @type {string[]}
  */
-export const publicRoutes: string[] = ['/'];
+export const publicRoutes: string[] = ['/', '/new-verification'];
 
 /**
  * An array of public routes that are used for authentication.

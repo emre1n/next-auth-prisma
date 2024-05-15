@@ -63,7 +63,7 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
           setFormStatus('success');
           setTimeout(() => {
             router.push('/login');
-          }, 2000);
+          }, 3000);
         }
       });
     });
@@ -99,7 +99,7 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
         <FormToaster state={formStatus} message={message} />
         <div className="flex flex-col gap-6">
           <Button type="submit" intent="primary" disabled={isPending}>
-            Sign up
+            Register
           </Button>
 
           <SocialLogin />
