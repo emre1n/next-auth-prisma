@@ -1,6 +1,6 @@
 'use client';
 
-import { newVerification } from '@/actions/db/new-verification';
+import { newVerification } from '@/actions/auth/new-verification';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { BeatLoader } from 'react-spinners';

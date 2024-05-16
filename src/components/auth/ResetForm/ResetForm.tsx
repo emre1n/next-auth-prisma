@@ -1,33 +1,28 @@
 'use client';
 
-import { login } from '@/actions/auth/login';
+import { resetPassword } from '@/actions/auth/reset';
 import FormToaster from '@/components/auth/FormToaster';
-import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
 import FormFieldTextInput from '@/components/form-components/FormFieldTextInput';
 import Button from '@/components/ui/Button';
 import {
-  LoginFormValuesType,
-  USER_LOGIN_VALIDATION_SCHEMA,
-} from '@/libs/constants/USER_LOGIN_VALIDATION_SCHEMA';
+  ResetFormValuesType,
+  USER_PASSWORD_RESET_VALIDATION_SCHEMA,
+} from '@/libs/constants/USER_PASSWORD_RESET_VALIDATION_SCHEMA';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import SocialLogin from '../SocialLogin';
-
-type Inputs = LoginFormValuesType;
+type Inputs = ResetFormValuesType;
 
 /**
  * FORM INITIALIZATION
  */
 const defaultFormValues = {
   email: '',
-  password: '',
 };
 
-export default function LoginForm() {
+export default function ResetForm() {
   const [formState, setFormState] = useState<{
     status: 'success' | 'error' | undefined;
     message: string | undefined;
@@ -38,7 +33,7 @@ export default function LoginForm() {
   const router = useRouter();
 
   const methods = useForm<Inputs>({
-    resolver: zodResolver(USER_LOGIN_VALIDATION_SCHEMA),
+    resolver: zodResolver(USER_PASSWORD_RESET_VALIDATION_SCHEMA),
     defaultValues: { ...defaultFormValues },
   });
 
@@ -46,7 +41,8 @@ export default function LoginForm() {
 
   const onSubmit = async (data: Inputs) => {
     startTransition(() => {
-      login(data).then(response => {
+      console.log('data=>', data);
+      resetPassword(data).then(response => {
         if (response && !response.success) {
           setFormState({ status: 'error', message: response?.message });
         } else {
@@ -54,10 +50,6 @@ export default function LoginForm() {
         }
       });
     });
-  };
-
-  const handleForgotPassword = () => {
-    router.push('/reset-password');
   };
 
   return (
@@ -70,35 +62,13 @@ export default function LoginForm() {
             disabled={isPending}
             placeholder="mail@example.com"
           />
-          <FormFieldPasswordInput
-            label="Password"
-            fieldName="password"
-            disabled={isPending}
-            placeholder="********"
-          />
-          <Button
-            className="self-end"
-            intent="link"
-            size="small"
-            onClick={handleForgotPassword}
-          >
-            Forgot password?
-          </Button>
         </div>
         <FormToaster state={formState.status} message={formState.message} />
         <div className="flex flex-col gap-6">
           <Button type="submit" intent="primary" disabled={isPending}>
-            Login
+            Send reset email
           </Button>
-
-          <SocialLogin />
         </div>
-        <p className="text-center text-sm text-gray-600 mt-2">
-          Don&apos;t have an account,&nbsp;
-          <Link className="text-blue-500 hover:underline" href="/register">
-            Register
-          </Link>
-        </p>
       </form>
     </FormProvider>
   );
