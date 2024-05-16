@@ -104,7 +104,7 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
 
           <SocialLogin />
         </div>
-        <p className="text-center text-sm text-gray-600 mt-2">
+        <p className="text-center text-xs text-gray-600 mt-2">
           Already have an account?&nbsp;
           <Link className="text-blue-500 hover:underline" href="/login">
             Login

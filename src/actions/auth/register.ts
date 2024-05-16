@@ -16,7 +16,7 @@ export async function createUser(data: RegisterFormValuesType) {
   if (!validatedFields.success) {
     return {
       success: false,
-      message: 'Validation failed',
+      message: 'Validation failed!',
     };
   }
 

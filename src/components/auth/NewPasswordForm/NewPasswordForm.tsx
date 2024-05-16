@@ -1,28 +1,29 @@
 'use client';
 
-import { resetPassword } from '@/actions/auth/reset';
+import { newPassword } from '@/actions/auth/new-password';
 import FormToaster from '@/components/auth/FormToaster';
-import FormFieldTextInput from '@/components/form-components/FormFieldTextInput';
+import FormFieldPasswordInput from '@/components/form-components/FormFieldPasswordInput';
 import Button from '@/components/ui/Button';
 import {
-  ResetFormValuesType,
-  USER_PASSWORD_RESET_VALIDATION_SCHEMA,
-} from '@/libs/constants/USER_PASSWORD_RESET_VALIDATION_SCHEMA';
+  NewPasswordFormValuesType,
+  USER_NEW_PASSWORD_VALIDATION_SCHEMA,
+} from '@/libs/constants/USER_NEW_PASSWORD_VALIDATION_SCHEMA';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-type Inputs = ResetFormValuesType;
+type Inputs = NewPasswordFormValuesType;
 
 /**
  * FORM INITIALIZATION
  */
 const defaultFormValues = {
-  email: '',
+  password: '',
 };
 
-export default function ResetForm() {
+export default function NewPasswordForm() {
   const [formState, setFormState] = useState<{
     status: 'success' | 'error' | undefined;
     message: string | undefined;
@@ -32,8 +33,11 @@ export default function ResetForm() {
 
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
+
   const methods = useForm<Inputs>({
-    resolver: zodResolver(USER_PASSWORD_RESET_VALIDATION_SCHEMA),
+    resolver: zodResolver(USER_NEW_PASSWORD_VALIDATION_SCHEMA),
     defaultValues: { ...defaultFormValues },
   });
 
@@ -41,7 +45,7 @@ export default function ResetForm() {
 
   const onSubmit = async (data: Inputs) => {
     startTransition(() => {
-      resetPassword(data).then(response => {
+      newPassword(data, token).then(response => {
         if (response && !response.success) {
           setFormState({ status: 'error', message: response?.message });
         } else {
@@ -58,17 +62,17 @@ export default function ResetForm() {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div className="flex flex-col gap-3">
-          <FormFieldTextInput
-            label="Email"
-            fieldName="email"
+          <FormFieldPasswordInput
+            label="Password"
+            fieldName="password"
             disabled={isPending}
-            placeholder="mail@example.com"
+            placeholder="********"
           />
         </div>
         <FormToaster state={formState.status} message={formState.message} />
         <div className="flex flex-col gap-6">
           <Button type="submit" intent="primary" disabled={isPending}>
-            Send reset email
+            Reset Password
           </Button>
         </div>
       </form>

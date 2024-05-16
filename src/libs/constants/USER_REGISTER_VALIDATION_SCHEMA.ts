@@ -6,7 +6,7 @@ export const USER_REGISTER_VALIDATION_SCHEMA = z.object({
   password: z
     .string()
     .min(1, 'Password is required')
-    .min(8, 'Password must have than 8 characters'),
+    .min(8, 'Minimun of 8 characters required'),
 });
 
 export type RegisterFormValuesType = z.infer<
