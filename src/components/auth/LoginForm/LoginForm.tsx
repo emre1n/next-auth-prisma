@@ -33,6 +33,8 @@ export default function LoginForm() {
     message: string | undefined;
   }>({ status: undefined, message: '' });
 
+  const [showTwoFactor, setShowTwoFactor] = useState(false);
+
   const [isPending, startTransition] = useTransition();
 
   const router = useRouter();
@@ -42,17 +44,28 @@ export default function LoginForm() {
     defaultValues: { ...defaultFormValues },
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, reset } = methods;
 
   const onSubmit = async (data: Inputs) => {
     startTransition(() => {
-      login(data).then(response => {
-        if (response && !response.success) {
-          setFormState({ status: 'error', message: response?.message });
-        } else {
-          setFormState({ status: 'success', message: response?.message });
-        }
-      });
+      console.log('data=>', data);
+      login(data)
+        .then(response => {
+          if (!response?.success) {
+            setFormState({ status: 'error', message: response?.message });
+          }
+
+          if (response?.success) {
+            setFormState({ status: 'success', message: response?.message });
+          }
+
+          if (response?.twoFactor) {
+            setShowTwoFactor(true);
+          }
+        })
+        .catch(() =>
+          setFormState({ status: 'error', message: 'Something went wrong!' }),
+        );
     });
   };
 
@@ -64,31 +77,46 @@ export default function LoginForm() {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div className="flex flex-col gap-3">
-          <FormFieldTextInput
-            label="Email"
-            fieldName="email"
-            disabled={isPending}
-            placeholder="mail@example.com"
-          />
-          <FormFieldPasswordInput
-            label="Password"
-            fieldName="password"
-            disabled={isPending}
-            placeholder="********"
-          />
-          <Button
-            className="self-end"
-            intent="link"
-            size="small"
-            onClick={handleForgotPassword}
-          >
-            Forgot password?
-          </Button>
+          {showTwoFactor && (
+            <>
+              <FormFieldTextInput
+                label="Two Factor Code"
+                fieldName="code"
+                disabled={isPending}
+                placeholder="123456"
+              />
+            </>
+          )}
+
+          {!showTwoFactor && (
+            <>
+              <FormFieldTextInput
+                label="Email"
+                fieldName="email"
+                disabled={isPending}
+                placeholder="mail@example.com"
+              />
+              <FormFieldPasswordInput
+                label="Password"
+                fieldName="password"
+                disabled={isPending}
+                placeholder="********"
+              />
+              <Button
+                className="self-end"
+                intent="link"
+                size="small"
+                onClick={handleForgotPassword}
+              >
+                Forgot password?
+              </Button>
+            </>
+          )}
         </div>
         <FormToaster state={formState.status} message={formState.message} />
         <div className="flex flex-col gap-6">
           <Button type="submit" intent="primary" disabled={isPending}>
-            Login
+            {showTwoFactor ? 'Confirm' : 'Login'}
           </Button>
 
           <SocialLogin />

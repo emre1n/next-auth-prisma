@@ -1,10 +1,17 @@
 'use server';
 
 import { signIn } from '@/auth';
-import { generateVerificationToken } from '@/data/tokens';
+import {
+  generateTwoFactorToken,
+  generateVerificationToken,
+} from '@/data/tokens';
+import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation';
+import { getTwoFactorTokenByEmail } from '@/data/two-factor-token';
 import { getUserByEmail } from '@/data/user';
 import type { LoginFormValuesType } from '@/libs/constants/USER_LOGIN_VALIDATION_SCHEMA';
 import { USER_LOGIN_VALIDATION_SCHEMA } from '@/libs/constants/USER_LOGIN_VALIDATION_SCHEMA';
+import { sendTwoFactorTokenEmail, sendVerificationEmail } from '@/libs/mail';
+import prisma from '@/libs/prisma';
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { AuthError } from 'next-auth';
 
@@ -18,7 +25,7 @@ export async function login(data: LoginFormValuesType) {
     };
   }
 
-  const { email, password } = validatedFields.data;
+  const { email, password, code } = validatedFields.data;
 
   const existingUser = await getUserByEmail(email);
 
@@ -30,11 +37,73 @@ export async function login(data: LoginFormValuesType) {
   }
 
   if (!existingUser.emailVerified) {
-    await generateVerificationToken(existingUser.email);
+    const verificationToken = await generateVerificationToken(
+      existingUser.email,
+    );
+
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token,
+    );
+
     return {
       success: true,
       message: 'Confirmation email sent!',
     };
+  }
+
+  if (existingUser.isTwoFactorEnabled && existingUser.email) {
+    if (code) {
+      const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
+
+      if (!twoFactorToken) {
+        return {
+          success: false,
+          message: 'Invalid code!',
+        };
+      }
+
+      if (code !== twoFactorToken.token) {
+        return {
+          success: false,
+          message: 'Invalid code!',
+        };
+      }
+
+      const hasExpired = new Date() > new Date(twoFactorToken.expiresAt);
+
+      if (hasExpired) {
+        return {
+          success: false,
+          message: 'Code has expired!',
+        };
+      }
+
+      await prisma.twoFactorToken.delete({
+        where: { id: twoFactorToken.id },
+      });
+
+      const existingConfirmation = await getTwoFactorConfirmationByUserId(
+        existingUser.id,
+      );
+
+      if (existingConfirmation) {
+        await prisma.twoFactorConfirmation.delete({
+          where: { id: existingConfirmation.id },
+        });
+      }
+
+      await prisma.twoFactorConfirmation.create({
+        data: {
+          userId: existingUser.id,
+        },
+      });
+    } else {
+      const twoFactorToken = await generateTwoFactorToken(existingUser.email);
+      await sendTwoFactorTokenEmail(existingUser.email, twoFactorToken.token);
+
+      return { twoFactor: true };
+    }
   }
 
   try {
