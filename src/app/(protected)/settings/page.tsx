@@ -1,11 +1,15 @@
-import { auth, signOut } from '@/auth';
+'use client';
+
+import { logout } from '@/actions/auth/logout';
 import Button from '@/components/ui/Button';
-import Image from 'next/image';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 
-export default async function Page() {
-  const session = await auth();
+export default function Page() {
+  const user = useCurrentUser();
 
-  const user = session?.user;
+  function handleSignOut() {
+    logout();
+  }
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -19,15 +23,9 @@ export default async function Page() {
             </div>
           ))}
       </div>
-      <form
-        action={async () => {
-          'use server';
-
-          await signOut();
-        }}
-      >
-        <Button type="submit">Sign out</Button>
-      </form>
+      <Button className="w-32" onClick={handleSignOut}>
+        Sign out
+      </Button>
     </div>
   );
 }

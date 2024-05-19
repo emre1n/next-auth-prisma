@@ -48,7 +48,6 @@ export default function LoginForm() {
 
   const onSubmit = async (data: Inputs) => {
     startTransition(() => {
-      console.log('data=>', data);
       login(data)
         .then(response => {
           if (!response?.success) {
