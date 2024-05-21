@@ -12,7 +12,7 @@ function GoogleOAuthIcon({ className }: IconProps) {
       height="16"
       viewBox="0 0 48 48"
       aria-hidden="true"
-      className={className}
+      className={clsxWithMerge('w-6 h-6', className)}
     >
       <path
         fill="#4285F4"

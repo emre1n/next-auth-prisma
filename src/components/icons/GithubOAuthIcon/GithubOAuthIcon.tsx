@@ -11,7 +11,7 @@ function GithubOAuthIcon({ className }: IconProps) {
       width="16"
       height="16"
       viewBox="0 0 496 512"
-      className={className}
+      className={clsxWithMerge('w-6 h-6', className)}
       stroke="currentColor"
       fill="currentColor"
     >

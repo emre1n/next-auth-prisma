@@ -35,8 +35,6 @@ const button = cva(
           'text-primary',
           'border-none',
           'hover:underline',
-          'px-0',
-          'py-0',
         ],
       },
       size: {

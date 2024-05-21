@@ -1,15 +1,9 @@
 'use client';
 
-import { logout } from '@/actions/auth/logout';
-import Button from '@/components/ui/Button';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 export default function Page() {
   const user = useCurrentUser();
-
-  function handleSignOut() {
-    logout();
-  }
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -23,9 +17,6 @@ export default function Page() {
             </div>
           ))}
       </div>
-      <Button className="w-32" onClick={handleSignOut}>
-        Sign out
-      </Button>
     </div>
   );
 }
