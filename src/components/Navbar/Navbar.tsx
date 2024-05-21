@@ -1,12 +1,12 @@
 'use client';
 
 import { logout } from '@/actions/auth/logout';
+import { Avatar, AvatarImage } from '@/components/Avatar';
 import DropdownMenu from '@/components/DropdownMenu';
 import UserIcon from '@/components/icons/UserIcon';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
-import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const Navbar = () => {
@@ -48,17 +48,12 @@ const Navbar = () => {
             className="flex items-center justify-center cursor-pointer rounded-full border w-8 h-8"
             onClick={handleUserDropDownMenu}
           >
-            {!!user ? (
-              <Image
-                className="rounded-full"
-                src={user?.image || ''}
-                height={32}
-                width={32}
+            <Avatar user={!!user} fallbackIcon={<UserIcon />}>
+              <AvatarImage
+                src={user?.image || 'https://github.com/default.png'}
                 alt="User Profile"
               />
-            ) : (
-              <UserIcon />
-            )}
+            </Avatar>
           </div>
           <DropdownMenu
             isOpen={isOpen}
