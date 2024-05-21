@@ -55,6 +55,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (!existingUser) return jwtParams.token;
 
       jwtParams.token.role = existingUser.role;
+      jwtParams.token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
       return jwtParams.token;
     },
@@ -65,6 +66,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
       if (sessionParams.token.role && sessionParams.session.user) {
         sessionParams.session.user.role = sessionParams.token.role as UserRole;
+      }
+
+      if (sessionParams.session.user) {
+        sessionParams.session.user.isTwoFactorEnabled = sessionParams.token
+          .isTwoFactorEnabled as boolean;
       }
 
       return sessionParams.session;

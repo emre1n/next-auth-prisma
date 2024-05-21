@@ -1,5 +1,6 @@
 'use client';
 
+import UserInfo from '@/components/auth/UserInfo';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 
 export default function Page() {
@@ -7,16 +8,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <h2 className="text-2xl">You are in!</h2>
-
-      <div>
-        {user &&
-          Object.entries(user).map(([key, value]) => (
-            <div key={key}>
-              <strong>{key}:</strong> {value}
-            </div>
-          ))}
-      </div>
+      <UserInfo user={user} label="User Info" />
     </div>
   );
 }

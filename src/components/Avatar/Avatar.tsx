@@ -7,11 +7,7 @@ interface AvatarProps {
   fallbackIcon?: React.ReactNode;
 }
 
-export const Avatar: React.FC<AvatarProps> = ({
-  children,
-  user,
-  fallbackIcon,
-}: AvatarProps) => {
+export const Avatar = ({ children, user, fallbackIcon }: AvatarProps) => {
   if (!user) {
     return fallbackIcon ? <>{fallbackIcon}</> : null; // Use fallbackIcon when there is no user
   }
@@ -24,7 +20,7 @@ interface AvatarImageProps {
   alt: string;
 }
 
-export const AvatarImage: React.FC<AvatarImageProps> = ({ src, alt }) => {
+export const AvatarImage = ({ src, alt }: AvatarImageProps) => {
   return (
     <Image
       src={src}
