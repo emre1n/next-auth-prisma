@@ -1,8 +1,7 @@
-import { auth } from '@/auth';
 import Navbar from '@/components/Navbar';
+import { currentUser } from '@/libs/auth';
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
-import { SessionProvider } from 'next-auth/react';
 import { Inter } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -17,16 +16,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  const user = await currentUser();
 
   return (
     <html lang="en">
-      <SessionProvider session={session}>
-        <body className={inter.className}>
-          <Navbar />
-          {children}
-        </body>
-      </SessionProvider>
+      <body className={inter.className}>
+        <Navbar user={user} />
+        {children}
+      </body>
     </html>
   );
 }

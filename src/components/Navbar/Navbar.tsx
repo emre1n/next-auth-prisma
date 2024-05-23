@@ -4,16 +4,18 @@ import { logout } from '@/actions/auth/logout';
 import { Avatar, AvatarImage } from '@/components/Avatar';
 import DropdownMenu from '@/components/DropdownMenu';
 import UserIcon from '@/components/icons/UserIcon';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { ExtendedUser } from '@/next-auth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-const Navbar = () => {
+interface NavbarProps {
+  user: ExtendedUser | undefined;
+}
+
+const Navbar = ({ user }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-
-  const user = useCurrentUser();
 
   function handleSignInButtonClick() {
     router.push('/login');
