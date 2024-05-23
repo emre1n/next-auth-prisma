@@ -59,10 +59,10 @@ const Navbar = () => {
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
             items={[
-              { label: 'Logout', onClick: handleSignOutButtonClick },
               { label: 'Login', onClick: handleSignInButtonClick },
               { label: 'Settings', onClick: handleSettingsButtonClick },
               { label: 'Admin', onClick: handleAdminButtonClick },
+              { label: 'Logout', onClick: handleSignOutButtonClick },
             ]}
           />
         </div>
