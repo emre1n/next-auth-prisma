@@ -49,7 +49,7 @@ export default function Page() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-8">
+    <div className="w-full flex flex-col gap-8 bg-slate-100 p-6 rounded-md max-w-80 shadow-md">
       <h1 className="text-2xl">Admin Page</h1>
       <RoleGate allowedRole={UserRole.ADMIN}>
         <FormToaster
