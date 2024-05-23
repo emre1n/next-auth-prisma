@@ -4,12 +4,12 @@ import OutlineExclamationTriangleIcon from '@/components/icons/OutlineExclamatio
 import OutlineInformationCircleIcon from '@/components/icons/OutlineInformationCircleIcon';
 import clsxWithMerge from '@/helpers/clsx-with-merge';
 
-export interface FormToasterProps {
+export interface ToasterProps {
   state?: 'success' | 'error' | 'warning' | 'info' | '';
   message?: string;
 }
 
-export default function FormToaster({ message, state }: FormToasterProps) {
+export default function Toaster({ message, state }: ToasterProps) {
   if (!message || !state) return null;
 
   let textColor = 'text-error';
