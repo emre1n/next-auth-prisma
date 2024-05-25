@@ -1,5 +1,6 @@
 'use client';
 
+import { admin } from '@/actions/auth/admin';
 import FormToaster from '@/components/auth/FormToaster';
 import type { FormToasterProps } from '@/components/auth/FormToaster/FormToaster';
 import RoleGate from '@/components/auth/RoleGate';
@@ -13,6 +14,24 @@ export default function Page() {
     message: string | undefined;
   }>({ status: undefined, message: '' });
   const [showApiCallStatus, setShowApiCallStatus] = useState(true);
+
+  const handleServerActionClick = () => {
+    admin().then(data => {
+      if (data.success) {
+        setApiCallStatus({
+          status: 'success',
+          message: data.message,
+        });
+        displayApiCallStatus();
+      } else {
+        setApiCallStatus({
+          status: 'error',
+          message: data.message,
+        });
+        displayApiCallStatus();
+      }
+    });
+  };
 
   const onApiRouteClick = () => {
     fetch('/api/admin').then(response => {
@@ -57,19 +76,20 @@ export default function Page() {
           message={adminContent.message}
         />
       </RoleGate>
+      {showApiCallStatus && (
+        <FormToaster
+          state={apiCallStatus.status}
+          message={apiCallStatus.message}
+        />
+      )}
       <div className="flex flex-col gap-4 items-center justify-between rounded-lg border p-3 shadow-md">
         <p className="text-sm font-medium">Admin-only API Route</p>
-        {showApiCallStatus && (
-          <FormToaster
-            state={apiCallStatus.status}
-            message={apiCallStatus.message}
-          />
-        )}
         <Button onClick={onApiRouteClick}>Click to test</Button>
       </div>
       <div className="flex flex-col gap-4 items-center justify-between rounded-lg border p-3 shadow-md">
         <p className="text-sm font-medium">Admin-only Server Action</p>
-        <Button>Click to test</Button>
+
+        <Button onClick={handleServerActionClick}>Click to test</Button>
       </div>
     </div>
   );
