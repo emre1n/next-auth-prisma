@@ -3,6 +3,7 @@
 import settings from '@/actions/auth/settings';
 import Button from '@/components/ui/Button';
 import { ExtendedUser } from '@/next-auth';
+import { useSession } from 'next-auth/react';
 import { useTransition } from 'react';
 
 interface UserInfoProps {
@@ -13,9 +14,13 @@ interface UserInfoProps {
 export default function UserInfo({ user, label }: UserInfoProps) {
   const [isPending, startTransition] = useTransition();
 
+  const { update } = useSession();
+
   const handleUpdateName = () => {
     startTransition(() => {
-      settings({ name: 'New Name' });
+      settings({ name: 'Another Name' }).then(() => {
+        update();
+      });
     });
   };
 

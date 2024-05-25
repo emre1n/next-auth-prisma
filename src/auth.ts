@@ -48,14 +48,16 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return true;
     },
     jwt: async jwtParams => {
-      // console.log('I am being called!');
       if (!jwtParams.token.sub) return jwtParams.token;
 
       const existingUser = await getUserById(jwtParams.token.sub);
 
       if (!existingUser) return jwtParams.token;
 
+      jwtParams.token.name = existingUser.name;
+      jwtParams.token.email = existingUser.email;
       jwtParams.token.role = existingUser.role;
+      jwtParams.token.image = existingUser.image;
       jwtParams.token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
       return jwtParams.token;
@@ -72,6 +74,13 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (sessionParams.session.user) {
         sessionParams.session.user.isTwoFactorEnabled = sessionParams.token
           .isTwoFactorEnabled as boolean;
+      }
+
+      if (sessionParams.session.user) {
+        sessionParams.session.user.name = sessionParams.token.name as string;
+        sessionParams.session.user.email = sessionParams.token.email as string;
+        sessionParams.session.user.role = sessionParams.token.role as UserRole;
+        sessionParams.session.user.image = sessionParams.token.image as string;
       }
 
       return sessionParams.session;
