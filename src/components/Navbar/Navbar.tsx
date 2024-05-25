@@ -22,6 +22,11 @@ const Navbar = ({ user }: NavbarProps) => {
     setIsOpen(!isOpen);
   }
 
+  function handleUserProfileDownMenu() {
+    router.push('/profile');
+    setIsOpen(!isOpen);
+  }
+
   function handleSettingsButtonClick() {
     router.push('/settings');
     setIsOpen(!isOpen);
@@ -62,6 +67,7 @@ const Navbar = ({ user }: NavbarProps) => {
             onClose={() => setIsOpen(false)}
             items={[
               { label: 'Login', onClick: handleSignInButtonClick },
+              { label: 'Profile', onClick: handleUserProfileDownMenu },
               { label: 'Settings', onClick: handleSettingsButtonClick },
               { label: 'Admin', onClick: handleAdminButtonClick },
               { label: 'Logout', onClick: handleSignOutButtonClick },

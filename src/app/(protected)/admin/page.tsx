@@ -1,11 +1,12 @@
 'use client';
 
-import { admin } from '@/actions/auth/admin';
+import admin from '@/actions/auth/admin';
 import FormToaster from '@/components/auth/FormToaster';
 import type { FormToasterProps } from '@/components/auth/FormToaster/FormToaster';
 import RoleGate from '@/components/auth/RoleGate';
 import Button from '@/components/ui/Button';
 import { UserRole } from '@prisma/client';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 
 export default function Page() {
@@ -14,6 +15,8 @@ export default function Page() {
     message: string | undefined;
   }>({ status: undefined, message: '' });
   const [showApiCallStatus, setShowApiCallStatus] = useState(true);
+
+  const { update } = useSession();
 
   const handleServerActionClick = () => {
     admin().then(data => {

@@ -48,6 +48,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return true;
     },
     jwt: async jwtParams => {
+      // console.log('I am being called!');
       if (!jwtParams.token.sub) return jwtParams.token;
 
       const existingUser = await getUserById(jwtParams.token.sub);

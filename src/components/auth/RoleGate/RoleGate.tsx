@@ -2,6 +2,7 @@ import FormToaster from '@/components/auth/FormToaster';
 import type { FormToasterProps } from '@/components/auth/FormToaster/FormToaster';
 import { useCurrentRole } from '@/hooks/useCurrentRole';
 import { UserRole } from '@prisma/client';
+import { useSession } from 'next-auth/react';
 
 interface RoleGateProps {
   allowedRole: UserRole;
@@ -10,6 +11,7 @@ interface RoleGateProps {
 
 export default function RoleGate({ allowedRole, children }: RoleGateProps) {
   const role = useCurrentRole();
+  const { update } = useSession();
 
   const notAllowedContent: FormToasterProps = {
     state: 'error',
@@ -17,6 +19,7 @@ export default function RoleGate({ allowedRole, children }: RoleGateProps) {
   };
 
   if (role !== allowedRole) {
+    update();
     return (
       <FormToaster
         state={notAllowedContent.state}

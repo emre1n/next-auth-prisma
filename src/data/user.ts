@@ -44,3 +44,24 @@ export const getUserById = async (id: string) => {
     return null;
   }
 };
+
+export const updateUserById = async (id: string, data: any) => {
+  try {
+    await prisma.user.update({
+      where: {
+        id,
+      },
+      data: { ...data },
+    });
+
+    return {
+      success: true,
+      message: 'Settings updated',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Failed to update settings',
+    };
+  }
+};
