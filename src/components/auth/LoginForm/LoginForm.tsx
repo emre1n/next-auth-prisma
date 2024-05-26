@@ -44,7 +44,7 @@ export default function LoginForm() {
     defaultValues: { ...defaultFormValues },
   });
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = async (data: Inputs) => {
     startTransition(() => {

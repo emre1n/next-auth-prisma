@@ -1,4 +1,5 @@
 import authConfig from '@/auth.config';
+import { getAccountByUserId } from '@/data/accounts';
 import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation';
 import { getUserById } from '@/data/user';
 import prisma from '@/libs/prisma';
@@ -54,6 +55,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
       if (!existingUser) return jwtParams.token;
 
+      const existingAccount = await getAccountByUserId(existingUser.id);
+
+      jwtParams.token.isOAuth = !!existingAccount;
       jwtParams.token.name = existingUser.name;
       jwtParams.token.email = existingUser.email;
       jwtParams.token.role = existingUser.role;
@@ -81,6 +85,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         sessionParams.session.user.email = sessionParams.token.email as string;
         sessionParams.session.user.role = sessionParams.token.role as UserRole;
         sessionParams.session.user.image = sessionParams.token.image as string;
+        sessionParams.session.user.isOAuth = sessionParams.token
+          .isOAuth as boolean;
       }
 
       return sessionParams.session;
