@@ -2,6 +2,7 @@
 
 import settings from '@/actions/auth/settings';
 import FormToaster from '@/components/auth/FormToaster';
+import FormFieldSwitch from '@/components/form-components/FormFieldSwitch';
 import FormFieldTextInput from '@/components/form-components/FormFieldTextInput';
 import Button from '@/components/ui/Button';
 import {
@@ -35,6 +36,7 @@ export default function UserInfo({ user, label }: UserInfoProps) {
    */
   const defaultFormValues = {
     name: user?.name || undefined,
+    isTwoFactorEnabled: user?.isTwoFactorEnabled || false,
   };
 
   const methods = useForm<Inputs>({
@@ -46,6 +48,7 @@ export default function UserInfo({ user, label }: UserInfoProps) {
 
   const onSubmit = (data: Inputs) => {
     startTransition(() => {
+      console.log('data', data);
       settings(data)
         .then(response => {
           if (!response?.success) {
@@ -84,6 +87,7 @@ export default function UserInfo({ user, label }: UserInfoProps) {
                 disabled={isPending}
                 placeholder="John Smith"
               />
+              <FormFieldSwitch label="2FA" fieldName="isTwoFactorEnabled" />
             </div>
             <FormToaster state={formState.status} message={formState.message} />
             <Button type="submit" intent="primary" disabled={isPending}>
