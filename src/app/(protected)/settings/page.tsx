@@ -1,4 +1,4 @@
-import UserSettings from '@/components/auth/UserSettings';
+import UserSettingsForm from '@/components/auth/UserSettingsForm';
 import { currentUser } from '@/libs/auth';
 
 export default async function Page() {
@@ -6,7 +6,7 @@ export default async function Page() {
 
   return (
     <div className="flex flex-col gap-4">
-      <UserSettings user={user} label="User Settings" />
+      <UserSettingsForm user={user} label="User Settings" />
     </div>
   );
 }

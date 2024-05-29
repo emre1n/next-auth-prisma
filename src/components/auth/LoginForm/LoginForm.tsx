@@ -94,6 +94,7 @@ export default function LoginForm() {
                 fieldName="email"
                 disabled={isPending}
                 placeholder="mail@example.com"
+                type="email"
               />
               <FormFieldPasswordInput
                 label="Password"

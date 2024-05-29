@@ -8,12 +8,14 @@ interface FormFieldTextInputProps {
   fieldName: string;
   type?: string;
   disabled?: boolean;
+  defaultValue?: boolean;
 }
 
 export default function FormFieldTextInput({
   label,
   fieldName,
   disabled,
+  defaultValue,
 }: FormFieldTextInputProps) {
   const { control } = useFormContext();
 
@@ -22,7 +24,12 @@ export default function FormFieldTextInput({
       name={fieldName}
       control={control}
       render={({ field }) => (
-        <Switch field={field} label={label} disabled={disabled} />
+        <Switch
+          field={field}
+          label={label}
+          disabled={disabled}
+          defaultValue={defaultValue}
+        />
       )}
     />
   );

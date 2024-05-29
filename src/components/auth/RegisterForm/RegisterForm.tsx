@@ -88,6 +88,7 @@ export default function RegisterForm({ createUser }: RegisterFormProps) {
             fieldName="email"
             disabled={isPending}
             placeholder="mail@example.com"
+            type="email"
           />
           <FormFieldPasswordInput
             label="Password"
