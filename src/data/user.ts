@@ -59,6 +59,7 @@ export const updateUserById = async (id: string, data: any) => {
       message: 'Settings updated',
     };
   } catch (error) {
+    console.log('Error updating user:', error);
     return {
       success: false,
       message: 'Failed to update settings',

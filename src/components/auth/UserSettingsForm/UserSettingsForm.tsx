@@ -112,25 +112,29 @@ export default function UserSettingsForm({
                 disabled={isPending}
                 placeholder="John Smith"
               />
-              <FormFieldTextInput
-                label="Email"
-                fieldName="email"
-                disabled={isPending}
-                placeholder="mail@example.com"
-                type="email"
-              />
-              <FormFieldPasswordInput
-                label="Password"
-                fieldName="password"
-                disabled={isPending}
-                placeholder="********"
-              />
-              <FormFieldPasswordInput
-                label="New Password"
-                fieldName="newPassword"
-                disabled={isPending}
-                placeholder="********"
-              />
+              {user?.isOAuth === false && (
+                <>
+                  <FormFieldTextInput
+                    label="Email"
+                    fieldName="email"
+                    disabled={isPending}
+                    placeholder="mail@example.com"
+                    type="email"
+                  />
+                  <FormFieldPasswordInput
+                    label="Password"
+                    fieldName="password"
+                    disabled={isPending}
+                    placeholder="********"
+                  />
+                  <FormFieldPasswordInput
+                    label="New Password"
+                    fieldName="newPassword"
+                    disabled={isPending}
+                    placeholder="********"
+                  />
+                </>
+              )}
               <FormFieldSelectInput
                 label="Role"
                 fieldName="role"
@@ -138,14 +142,16 @@ export default function UserSettingsForm({
                 defaultValue={defaultUserValues.role}
                 isSearchable
               />
-              <div className="flex justify-between items-center border px-3 py-2 rounded-md bg-base-100">
-                <FormFieldSwitch
-                  label="2FA"
-                  fieldName="isTwoFactorEnabled"
-                  disabled={isPending}
-                  defaultValue={defaultUserValues.isTwoFactorEnabled}
-                />
-              </div>
+              {user?.isOAuth === false && (
+                <div className="flex justify-between items-center border px-3 py-2 rounded-md bg-base-100">
+                  <FormFieldSwitch
+                    label="2FA"
+                    fieldName="isTwoFactorEnabled"
+                    disabled={isPending}
+                    defaultValue={defaultUserValues.isTwoFactorEnabled}
+                  />
+                </div>
+              )}
             </div>
             <FormToaster state={formState.status} message={formState.message} />
             <Button type="submit" intent="primary" disabled={isPending}>

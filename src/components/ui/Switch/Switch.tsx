@@ -9,6 +9,8 @@ import tailwindConfig from '../../../../tailwind.config';
 type ExtendedColors = DefaultColors & {
   primary: string;
   secondary: string;
+  success: string;
+  error: string;
 };
 
 interface SwitchProps {
@@ -30,7 +32,8 @@ const Switch: React.FC<SwitchProps> = ({
 
   const fullConfig = resolveConfig(tailwindConfig);
   const colors = fullConfig.theme.colors as ExtendedColors;
-  const primaryColor = colors.primary;
+  const successColor = colors.success;
+
   const secondaryColor = colors.secondary;
 
   const handleChange = (isChecked: boolean) => {
@@ -48,7 +51,7 @@ const Switch: React.FC<SwitchProps> = ({
         disabled={disabled}
         checked={checked}
         onChange={handleChange}
-        onColor={primaryColor}
+        onColor={successColor}
         onHandleColor={secondaryColor}
         handleDiameter={18}
         uncheckedIcon={false}
